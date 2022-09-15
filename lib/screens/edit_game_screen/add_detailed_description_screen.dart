@@ -91,11 +91,7 @@ class AddDetailedDescriptionScreen extends StatelessWidget {
                   textInputAction: TextInputAction.next,
                   //go to the next input after we confirm/Enter
                   //go to a focus node if we use the below code
-                  onFieldSubmitted: (inputValue) {
-                    //we don't really need inputValue, so just use _ instead of inputValue is OK
-                    //FocusScope.of(context).requestFocus(_msrpFocusNode);
-                    //if we click next, it will jump to the field with the requestFocusNode
-                    //which is _msrpFocusNode for msrp field
+                  onFieldSubmitted: (_) {
                   },
                   onSaved: (inputValue) {
                     addDetailedDescription(inputValue);
