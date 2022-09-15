@@ -1,29 +1,3 @@
-//SHARED PREFERENCES, as it names suggests if we use it
-//then all users with the same device would have use the same preferences
-//Supported data types are int, double, bool, String and List<String>
-//so we cannot use Map with user id to differentiate users in a device
-//so it's less ideal than fetching preferences from server
-
-//should also have filters based on userRatings
-
-//should have filters to fetch data only once to improve performance or fetch it each time
-//for both trending and games overview screen
-
-//should have filters to show only multi players or single players games
-//should have filters to show only Xbox, only PS5 (exclusive games)
-
-//also have filter fo enable infinite scroll images in game detail screen (maybe not)
-
-//filter screen should use bottom navigation bars
-//one would be for genre filters (show only) games belong to the genre that you like
-//should also have filters for how many items on the grid (cross axis)
-
-//show Description or not also should be an option
-//if grids element are 2 for cross axis then show Description should always be off
-
-//cross axis count for gamesoverviewscreen 1 or 2
-//if 2 then title should be underneath
-
 //Firebase
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -151,12 +125,11 @@ class UserPreferences with ChangeNotifier {
     }
     //must be very careful about default rule as well as precedence of these
     //check games overview screen about defualt rule as well as precedence
-    //default: show backlog (have not played), and have played not finished
+    //default if not showAll should be: show backlog (have not played), and have played not finished
     //if showAll is true, everything is true,
     //if there is one false, showAll is false,
     //if everything is true and showAll become false, then to default mode, showFinished is false
-    //one case we have not thought is what if every filter is false???
-    //should we don't show anything? yes!!!
+    //one case we have not thought is what if every filter is false? maybe we should not show anything -> but also not show a blank screen
     _myCollectionFilters['showAll'] = !_myCollectionFilters['showAll']!;
     if (_myCollectionFilters['showAll'] == true) {
       _myCollectionFilters['showBacklog'] = true;
@@ -257,7 +230,7 @@ class UserPreferences with ChangeNotifier {
 }
 
 //legacy code for fetching
-//these are now in main and do not belong to this class anymore
+//these are now implemented in main and do not belong to this class anymore
 /*
   /*
   Future<void> fetchUserPreferences() async {
