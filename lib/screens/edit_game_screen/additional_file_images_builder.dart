@@ -1,1 +1,1 @@
-//similar implementation as addition_images_builder.dart
+//similar to addition_images_builder.dart
