@@ -1,12 +1,3 @@
-//fix the issue where trash screen appears to have nothing and we have to reload it
-//then it shows a lot -> wrong. Probably related to not using Future Builder
-//so we probably have to use FutureBuilder anytime soon
-
-//maybe if we want to use the floating button then we can't use Consumer
-
-//see: https://stackoverflow.com/questions/46651974/swipe-list-item-for-more-options-flutter
-//for slideable package
-
 //packages
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -194,14 +185,6 @@ class TrashScreen extends StatelessWidget {
             ),
             drawer: const AppDrawer(),
           ),
-
-          //there's a problem, after refresh empty trash screen -> has trash screen
-          //the button still has the _refresh function instead of restore all function
-          //so we should also use Consumer for it
-          //cannot use Consumer
-          //maybe if we want to use the floating button then we can't use Consumer
-          //should we not use Consumer and convert this widget to stateful
-
           Consumer<Games>(builder: (context, gamesData, child) {
             if (gamesData.trashGames.isEmpty) {
               return Container();
