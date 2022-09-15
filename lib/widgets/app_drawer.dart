@@ -174,17 +174,6 @@ class AppDrawer extends StatelessWidget {
                 leading: const Icon(Icons.delete_sweep_sharp),
                 title: const Text("App Manager's Trash"),
                 onTap: () {
-                  /*
-                  while (Navigator.of(context).canPop()) {
-                    Navigator.of(context).pop();
-                  }
-
-                  Navigator.of(context).push(
-                    CustomRoute(
-                      builder: (context) => const DeveloperTrashScreen(),
-                    ),
-                  );
-                  */
 
                   Navigator.of(context).pushAndRemoveUntil(
                     CustomRoute(
@@ -237,10 +226,6 @@ void _logout(BuildContext context, NavigatorState navigatorState, Games gamesDat
               while (navigatorState.canPop()) {
                 navigatorState.pop();
               }
-
-              //should await since GamesOverView use temp_data, and here we set temp_data to null
-              //await navigatorState.pushNamed(AuthScreen.routeName);
-              //navigatorState.pop();
 
               gamesData.reset();
               temp_data.reset();
