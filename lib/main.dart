@@ -180,50 +180,6 @@ class MyApp extends StatelessWidget {
     required this.timeBeforeEmptyTrash,
   }) : super(key: key);
 
-/*
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-//how to use theme in flutter
-//see: https://stackoverflow.com/questions/64999808/get-widget-observer-for-widgetsbindingobserver
-//in order for this to be deemed as WidgetsBindingObserver we have to use mix in
-class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
-
-  Brightness? _brightness;
-  @override
-  void initState() {
-    WidgetsBinding.instance.addObserver(this);
-    _brightness = WidgetsBinding.instance.window.platformBrightness;
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangePlatformBrightness() {
-    if (mounted) {
-      setState(() {
-        _brightness = WidgetsBinding.instance.window.platformBrightness;
-      });
-    }
-    super.didChangePlatformBrightness();
-  }
-
-  CupertinoThemeData get _lightTheme => const CupertinoThemeData(
-        brightness: Brightness.light, /* light theme settings */
-      );
-
-  CupertinoThemeData get _darkTheme => const CupertinoThemeData(
-        brightness: Brightness.dark, /* dark theme settings */
-      );
-      */
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -235,7 +191,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         ),
       ],
       //this ensures that whenever the Auth object changes, Material App gets rebuilt
-      //how about we wrap this with Consumer???
       child: Consumer<UserPreferences>(
         builder: (context, userPreferences, _) {
           return MaterialApp(
@@ -291,55 +246,3 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     );
   }
 }
-
-/*
-colorScheme: ColorScheme.fromSeed(
-  seedColor: Colors.blue,
-  primaryContainer: Colors.black54, //primaryContainer: color of containers
-  onPrimaryContainer: Colors.white70, //onPrimaryContainertext on containers
-  primary: Colors.black26,
-  //background color of elevatedbuttons, text color of textbuttons
-  onPrimary: Colors.red, //color of text on buttons
-  surface: Colors.black26, //surface: color of app bar
-  onSurface: Colors.white70, //text on appbar
-
-  secondaryContainer: Colors.yellow,
-  secondary: Colors.red,
-  tertiary: Colors.red,
-  tertiaryContainer: Colors.red,
-  shadow: Colors.amber,
-  brightness: Brightness.dark,
-
-
-  background: Colors.yellow,
-).copyWith(brightness: Brightness.dark),
-*/
-
-/*
-if (Platform.isIOS) {
-  return CupertinoApp(
-    debugShowCheckedModeBanner: false,
-    title: 'My Backlog',
-    theme: _brightness == Brightness.dark ? _darkTheme : _lightTheme,
-    home: StreamBuilder(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      //notifies when there's change (login, signup, ...)
-
-      builder: (ctx, userSnapshot) {
-        //check if user actually logs out
-        //if so hasData = false
-        print("connectionState = ${userSnapshot.connectionState}");
-        print("hasData = ${userSnapshot.hasData}");
-
-        if (userSnapshot.connectionState == ConnectionState.waiting) {
-          return const SplashScreen();
-        } else if (userSnapshot.hasData) {
-          return const GamesOverviewScreen();
-        } else {
-          return const AuthScreen();
-        }
-      },
-    ),
-  );
-}
-*/
