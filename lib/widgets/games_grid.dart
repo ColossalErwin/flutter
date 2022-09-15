@@ -1,14 +1,3 @@
-/*
-════════ Exception caught by rendering library ═════════════════════════════════
-SliverGeometry is not valid: The "maxPaintExtent" is less than the "paintExtent".
-The relevant error-causing widget was
-GridView
-lib/widget/games_grid.dart:24
-═════════════════════════════════════════════════════════════════════════
-
-This probably because at first when we load data there is no item so GridView displays nothing
-maybe add a Splash Screen or Loading screen/displays nothing
-*/
 //packages
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,18 +18,6 @@ class GamesGrid extends StatelessWidget {
   }) : super(key: key);
 
   Future<void> _refreshGamesGrid(BuildContext ctx) async {
-    /*
-    final myCollectionFilters =
-        Provider.of<UserPreferences>(ctx, listen: false).myCollectionFilters;
-    
-    await Provider.of<Games>(ctx, listen: false).fetchGames(
-      GamesOption.userGames,
-      showAll: myCollectionFilters['showAll'] ?? true,
-      showBacklog: myCollectionFilters['showBacklog'] ?? true,
-      showFinished: myCollectionFilters['showFinished'] ?? true,
-      showHaveNotFinished: myCollectionFilters['showHaveNotFinished'] ?? true,
-    );
-    */
     await Provider.of<Games>(ctx, listen: false).fetchGames(GamesOption.userGames);
   }
 
@@ -87,23 +64,6 @@ class GamesGrid extends StatelessWidget {
             hideDislikeds: myCollectionFilters['hideDislikeds'] ?? true,
             isInFavoriteMode: showFavoritesOnly,
           );
-          /*
-          final games = showFavoritesOnly
-              ? gamesData.getFilteredFavoriteGames(
-                  showAll: myCollectionFilters['showAll'] ?? true,
-                  showBacklog: myCollectionFilters['showBacklog'] ?? true,
-                  showFinished: myCollectionFilters['showFinished'] ?? true,
-                  showHaveNotFinished: myCollectionFilters['showHaveNotFinished'] ?? true,
-                  hideDislikeds: myCollectionFilters['hideDislikeds'] ?? true,
-                )
-              : gamesData.getFilteredGames(
-                  showAll: myCollectionFilters['showAll'] ?? true,
-                  showBacklog: myCollectionFilters['showBacklog'] ?? true,
-                  showFinished: myCollectionFilters['showFinished'] ?? true,
-                  showHaveNotFinished: myCollectionFilters['showHaveNotFinished'] ?? true,
-                  hideDislikeds: myCollectionFilters['hideDislikeds'] ?? true,
-                );
-                */
           if (games.isEmpty && showFavoritesOnly) {
             return ListView.builder(
               itemCount: 1,
@@ -117,20 +77,8 @@ class GamesGrid extends StatelessWidget {
                   child: const Center(
                     child: Text("You currently don't have any favorite games."),
                   ),
-                ); //should write something here or show a picture saying you don't have any
+                ); //should write something here or show a picture saying "you don't have any [...] games"
               },
-              /*
-                            return SizedBox(
-                height: mediaQueryData.size.height -
-                    mediaQueryData.padding.top -
-                    mediaQueryData.padding.bottom -
-                    kBottomNavigationBarHeight * 2.5,
-                /*-appBar.height*/ //kBottomNavigationBarHeight * 2 is to compensate for the appBar
-                child: const Center(
-                  child: Text("You currently don't have any trending games in your wishlist"),
-                ),
-              );
-              */
             );
           } else if (games.isEmpty) {
             return ListView.builder(
@@ -143,15 +91,6 @@ class GamesGrid extends StatelessWidget {
           return Container(
             //this border is for ios sizing only
             decoration: BoxDecoration(
-              //color: Colors.black87,
-              //const Color.fromARGB(255, 237, 237, 237), //Colors.black87 -> dark theme
-              //could potentially use this for background theme
-              /*
-              border: Border.all(
-                color: Colors.black,
-                width: 2,
-              ),
-              */
               borderRadius: BorderRadius.circular(12),
             ),
             child: GridView.builder(
