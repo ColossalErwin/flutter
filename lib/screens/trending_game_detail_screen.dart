@@ -1,1 +1,1 @@
-//private implementation
+//similar to game detail screen
