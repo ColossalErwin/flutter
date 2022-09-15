@@ -74,11 +74,6 @@ class TrashGameItem extends StatelessWidget {
                   child: const Text("No"),
                   onPressed: () {
                     Navigator.of(context).pop(false);
-                    //Navigator.of(context).pop would close the AlertDialog
-                    //since the anonymous function needs to return a Future obj that contains boolean
-                    //and ShowDialog can return a Future object
-                    //we can pass a boolean value to the pop method inside AlertDialog
-                    //this value would then become the boolean value return for the Future obj of showDialog
                   },
                 ),
                 TextButton(
