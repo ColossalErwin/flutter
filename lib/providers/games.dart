@@ -1,34 +1,4 @@
-/*
-understand Firebase Storage rules
-// Given request.path == /example/hello/nested/path the following
-// declarations indicate whether they are a partial or complete match and
-// the value of any variables visible within the scope.
-service firebase.storage {
-  // Partial match.
-  match /example/{singleSegment} {   // `singleSegment` == 'hello'
-    allow write;                     // Write rule not evaluated.
-    // Complete match.
-    match /nested/path {             // `singleSegment` visible in scope.
-      allow read;                    // Read rule is evaluated.
-    }
-  }
-  // Complete match.
-  match /example/{multiSegment=**} { // `multiSegment` == /hello/nested/path
-    allow read;                      // Read rule is evaluated.
-  }
-}
-As the example above shows, the path declarations supports the following variables:
-
-Single-segment wildcard: A wildcard variable is declared in a path 
-by wrapping a variable in curly braces: {variable}. 
-This variable is accessible within the match statement as a string.
-Recursive wildcard: The recursive, or multi-segment, 
-wildcard matches multiple path segments at or below a path. 
-This wildcard matches all paths below the location you set it to. 
-You can declare it by adding the =** string at the end of your segment variable: {variable=**}. 
-This variable is accessible within the match statement as a path object.
-
-*/
+//should improve by using Cloud Firestore's feature for custom object
 
 //dart
 import 'dart:io';
@@ -43,14 +13,6 @@ import 'package:provider/provider.dart';
 import '../helpers/theme_data.dart';
 //providers
 import './user_preferences.dart';
-
-//import '../temp_data/temp_data.dart' as temp_data;
-//import 'package:html/parser.dart';
-/*
-import 'package:http/http.dart' as http;
-import 'package:html/parser.dart' show parse;
-import 'package:html/dom.dart' as dom; //must use as or else cannot use Text widget
-*/
 
 import './game.dart';
 
@@ -110,13 +72,6 @@ class Games with ChangeNotifier {
 
   List<Game> _games = [];
 
-//we can create two lists
-//then if we want to sort based on two things
-//for example we want to sort based on favorite status and name
-//then first create list1 and list2
-//run through games and put games that are favorites to list1 and not favorites to list2
-//after that sort the two lists using name
-//then use the spread operators [...list1, ...list2] maybe with toList to merge them back
   List<Game> get games {
     List<Game> tempGames = [..._games];
     tempGames.sort(
@@ -137,27 +92,6 @@ class Games with ChangeNotifier {
     List<Game> filteredGames = [];
 
     filteredGames = (isInFavoriteMode ? favoriteGames : _games).where((game) {
-      /*
-      if (hideDislikeds == false || (hideDislikeds == true && addedGame.isDisliked == false)) {
-        if (( //case 1: have played but not finished case
-                addedGame.hasPlayed == true &&
-                    addedGame.hasFinished == false &&
-                    showHaveNotFinished == true) ||
-            //case 2: has finished
-            (addedGame.hasFinished == true && showFinished == true) ||
-            //case 3: has not played
-            (addedGame.hasPlayed == false && showBacklog == true)) {
-          loadedGames.add(addedGame);
-        }
-      }
-      */
-      /*
-      if (hideDislikeds == true && game.isDisliked == true) {
-        return false;
-      } else {
-        return true;
-      }*/
-
       if (hideDislikeds == false || (hideDislikeds == true && game.isDisliked == false)) {
         return game.hasPlayed && game.hasFinished == false && showHaveNotFinished ||
             game.hasFinished && showFinished ||
@@ -211,45 +145,6 @@ class Games with ChangeNotifier {
     });
     return tempGames;
   }
-/*
-  final List<Game> _demoGames = [
-    Game(
-      id: Timestamp.now().toString(),
-      title: "(DEMO) Sekiro: Shadows Die Twice",
-      titleImageURL:
-          "https://image.api.playstation.com/vulcan/img/rnd/202010/2723/knxU5uU5aKvQChKX5OvWtSGC.png",
-      imageURLs: [
-        "https://cdn.akamai.steamstatic.com/steam/apps/814380/ss_15f0e9982621aed44900215ad283811af0779b1d.1920x1080.jpg",
-        "https://s3.amazonaws.com/prod-media.gameinformer.com/styles/full/s3/2019/03/20/02020928/1.jpg",
-        "https://s3.amazonaws.com/prod-media.gameinformer.com/styles/full/s3/2019/01/07/5701440d/news1.jpg",
-        "https://www.gameaxis.com/wp-content/uploads/2019/04/SekiroShadowDieTwice_Review_01.jpg",
-      ],
-      msrp: 59.99,
-      description:
-          "(This is a demo game item that is added after you signing up)\nIn Sekiro™: Shadows Die Twice you are the 'one-armed wolf', a disgraced and disfigured warrior rescued from the brink of death. Bound to protect a young lord who is the descendant of an ancient bloodline, you become the target of many vicious enemies, including the dangerous Ashina clan.",
-      platform: Platform.PS4,
-      hasPlayed: true,
-      hasFinished: false,
-      isDisliked: false,
-      isFavorite: true,
-      lastPlayDate: Timestamp.fromDate(DateTime(2020)),
-      longDescription:
-          "Return from death and take revenge on those who wronged you.\nEnter a dark and brutal new gameplay experience from the creators of Bloodborne and the Dark Souls series.\nSekiro: Shadows Die Twice is an intense, third-person, action-adventure set against the bloody backdrop of 14th-century Japan. Step into the role of a disgraced warrior brought back from the brink of death whose mission is to rescue his master and exact revenge on his arch nemesis.\nExploring a vast interconnected world, you'll come face-to-face with larger than life foes and gruelling one-on-one duels.\nUnleash an arsenal of deadly prosthetic weapons and powerful ninja abilities to bring down your adversaries and combine steal and verticality to deal death from the shadows.",
-      releaseDate: Timestamp.fromDate(DateTime(2019, 3, 21)),
-      purchasePrice: 21.99,
-      userDescription:
-          "Fantastic game, but really difficult :)); might need to learn how to time deflections perfectly before proceed.",
-      userRating: Rating.five,
-      userTitleImageURL:
-          "https://firebasestorage.googleapis.com/v0/b/video-games-backlog.appspot.com/o/clients%2Fimages%2Fsekiro%20demo%20title.jpeg?alt=media&token=b961fa51-3a3f-459d-85bb-87458163bf17",
-      userImageURLs: [
-        "https://firebasestorage.googleapis.com/v0/b/video-games-backlog.appspot.com/o/clients%2Fimages%2Fsekiro%201.jpeg?alt=media&token=d7cc8a1d-2ee8-4185-aba7-6e2119814885",
-        "https://firebasestorage.googleapis.com/v0/b/video-games-backlog.appspot.com/o/clients%2Fimages%2Fsekiro%202.jpeg?alt=media&token=7b78e53a-9a64-418b-9806-e3141229b073",
-      ],
-    ),
-  ];
-*/
-
   Game findByID(String id, GamesOption gamesOption) {
     if (gamesOption == GamesOption.userGames) {
       return _games.firstWhere((game) => game.id == id);
@@ -304,20 +199,18 @@ class Games with ChangeNotifier {
   }
 
   Future<void> restoreAllTrashGames() async {
-    //don't use for each since this error would occur (meaning we modify the list during for each)
-    //Exception: Concurrent modification during iteration: Instance(length:17) of '_GrowableList'
+    //don't use for each since it would cause the below error
+    //Exception: Concurrent modification during iteration
     while (_trashGames.isNotEmpty) {
       await restoreTrashGame(_trashGames.last);
     }
   }
 
   Future<void> emptyTrash() async {
-    //don't use for each since this error would occur (meaning we modify the list during for each)
-    //Exception: Concurrent modification during iteration: Instance(length:17) of '_GrowableList'
     while (_trashGames.isNotEmpty) {
       //deleteGame(_trashGames.last.id, GamesOption.trashGames);
       //this is actually inefficient since it uses a search id function
-      //we just need to delete the trashGames list from end to first element
+      //we just need to delete the trashGames list from end to its first element (array deletion is O(1) if it's delete last element)
       //so we should add another parameter for the deleteGame function
       //isDeleteLast = true
       await deleteGame(
@@ -329,10 +222,8 @@ class Games with ChangeNotifier {
   }
 
   Future<void> fetchAndRemoveOldTrashGames() async {
-    //can convert a String to Timestamp simply by using as Timestamp
     //remember to remove an item after 30 days
     //or have a filter whether users want to remove an item after 30 days
-
     try {
       bool containsTrashGamesKey = false;
       await FirebaseFirestore.instance
@@ -381,9 +272,8 @@ class Games with ChangeNotifier {
               //delete after 30 days of not restoration
               //only activate when users go to trash screen, so there's a way to keep data if pass 30 days
               //as long as users don't go to trash screen
-              //a Firebase function should be better
-              //print("Duration difference is ${currentDate.difference(deletedDate)}");
-              //since we remove the item, we don't really need to use await? or do we?
+              //might consider using Firebase functions???
+              //since we remove the item permanently, we don't really need to use await? or do we?
 
               if (trashGame['titleImageURL'].startsWith(
                   'https://firebasestorage.googleapis.com/v0/b/video-games-backlog.appspot.com/o/users%2F${FirebaseAuth.instance.currentUser!.uid}')) {
@@ -609,55 +499,14 @@ class Games with ChangeNotifier {
                   element.containsKey('releaseDate') ? element['releaseDate'] as Timestamp? : null,
               anticipatedLevel: element.containsKey('anticipatedLevel')
                   ? (element['anticipatedLevel'] as int?)
-                  //if it's null then gives it a default value of 80
-                  //we actually shouldn't give it a default value like this.
-                  //instead give it a default value in the sort function
-                  //since if on the database it's anticipated Level is null
-                  //and we give it here the value 80, then when we update it arrayRemove would fail
-                  // since it couldn't look up the exact game
+                  //we actually shouldn't give anticipatedLevel a default value here
+                  //instead give it a temporary default value in the sort function
+                  //Reason: suppose on the database, the anticipated Level is null
+                  //and we set its value here to be 80, then arrayRemove would fail since it couldn't find the object (80 != null)
+                  //arrayRemove couldn't find the exact match for the game!
                   : null,
             );
             loadedGames.add(addedGame);
-            /*
-              //We can actually put these 3 if or else if into just one condition
-              //but for the sake of clarity, ...
-
-              //case 1: have played but not finished case
-              if (addedGame.hasPlayed == true &&
-                  addedGame.hasFinished == false &&
-                  showHaveNotFinished == true) {
-                loadedGames.add(addedGame);
-              }
-              //case 2: has finished the game is true (implies that hasPlayed is also true so we dont have to put the condition here)
-              else if (addedGame.hasFinished == true && showFinished == true) {
-                //
-                loadedGames.add(addedGame);
-              }
-              //case 3: has not played the game
-              else if (addedGame.hasPlayed == false && showBacklog == true) {
-                loadedGames.add(addedGame);
-              }
-              */
-            /*
-            if (gamesOption == GamesOption.userGames) {
-              if (hideDislikeds == false ||
-                  (hideDislikeds == true && addedGame.isDisliked == false)) {
-                if (( //case 1: have played but not finished case
-                        addedGame.hasPlayed == true &&
-                            addedGame.hasFinished == false &&
-                            showHaveNotFinished == true) ||
-                    //case 2: has finished
-                    (addedGame.hasFinished == true && showFinished == true) ||
-                    //case 3: has not played
-                    (addedGame.hasPlayed == false && showBacklog == true)) {
-                  loadedGames.add(addedGame);
-                }
-              }
-            } else {
-              //else if trendingGames or wishlistGames
-              loadedGames.add(addedGame);
-            }
-            */
           }
           //we use loadedGames since if we refresh and use _games.add(addedGame) then we would fetch and add the same data
           //->so we need loadedGames as a temporary List for each fetching
@@ -680,41 +529,19 @@ class Games with ChangeNotifier {
       print(error);
     } catch (error) {
       //print(error);
-      // //rethrow;
+      //rethrow;
     }
   }
 
   //this function should be Future bool so that we know if we add something successfully or not
 
   Future<bool> addTrendingGameToCollection(Game addedTrendingGame, BuildContext ctx) async {
-    //IMPORTANT
-    //this would yield 0 if we don't fetch trash games
-    //since the only way to fetch trash games is to call fetch trash (we do that whenever we enter trash screen)
-    //but if we did not go there before clicking the add button, then trash Games have not been fetched and trashGames length is zero
-    //therefore we have to call fetch Trash here
+
     if (trashGames.isEmpty) {
-      //if trashGames length is zero then potentially we have not visited trash screen, so we have to fetch
       await fetchAndRemoveOldTrashGames();
     }
 
     bool? hasAdded;
-    //maybe if the id is already there
-    //display a message like, you have already added this game to your collection
-    //and might create a duplicate => do you want to proceed???
-    //yes then create a new one with old_id+timestamp
-    //every time check by startwith???
-    //or we should use map for trendingGameIDs
-    //id: 'abc', isInTrash: yes, => then whenever we added a new one, ask the user either delete the item in the trash before add it
-    //or not add it
-    //this is more plausible
-    //for this we have to add another field like isFromTrendingGames;
-    //then everytime delete an item, check if it's from trendinggames, if yes then set isInTrash to true
-    //however, the easier approach like many OSs do is just allow duplicates, and change its id
-
-    //Just display a MESSAGE like: "you already added this game before and might create a duplicate if you haven't deleted the other.",
-
-    //SOLUTION 3: using map and have a counter for trendingGameID, when permanently deleted an item -> counter--
-    //but this would modify a lot of code
 
     String? detailedDescription;
 
@@ -780,13 +607,15 @@ class Games with ChangeNotifier {
               }
               int trashDuplicateIndex = 0;
               List<int> trashDuplicateIndices = [];
+              
+              //IMPORTANT for checking duplicates
+              //this would yield 0 if we have not fetched trash games
               print("trash games length is");
               print(trashGames.length);
-              //IMPORTANT
-              //this would yield 0 if we don't fetch trash games
               //since the only way to fetch trash games is to call fetch trash (we do that whenever we enter trash screen)
               //but if we did not go there before clicking the add button, then trash Games have not been fetched and trashGames length is zero
-              //therefore we have to call fetch Trash here
+              //while it's not actually zero
+              //therefore we have to call fetchTrash here
               for (Game trashGame in trashGames) {
                 if (trashGame.id.startsWith(addedTrendingGame.id)) {
                   trashDuplicateIndices.add(trashDuplicateIndex);
@@ -872,40 +701,7 @@ class Games with ChangeNotifier {
                                         for (String id in removedTrashGameIDs) {
                                           deleteGame(id, GamesOption.trashGames);
                                         }
-
-                                        //we can actually improve the above code by creating our own function
-                                        //passing index, and Game removedGame
-                                        //removedGame is for exact match on the database
-                                        //while index is for removeAt so that we don't have to search for the correct index again
-                                        //maybe modify deleteGame a bit
-                                        //so the option should be deleteWithKnownIndex
-                                        /*
-                                        //IMPROVED CODE
-
-                                        print(duplicateIndices);
-                                        print(trashDuplicateIndices);
-
-                                        for (int index = duplicateIndices.length - 1;
-                                            index >= 0;
-                                            index--) {
-                                          //_games.removeAt(duplicateIndices[index]);
-                                          deleteGame(
-                                            addedTrendingGame.id,
-                                            GamesOption.userGames,
-                                            knownIndex: duplicateIndices[index],
-                                          );
-                                        }
-                                        for (int index = trashDuplicateIndices.length - 1;
-                                            index >= 0;
-                                            index--) {
-                                          deleteGame(
-                                            addedTrendingGame.id,
-                                            GamesOption.trashGames,
-                                            knownIndex: trashDuplicateIndices[index],
-                                          );
-                                        }
-                                        //IMPROVED CODE
-                                        */
+                                        //try to improve the code using stored indices arrays instead of searching a game using ids again
 
                                         await addGame(
                                           addedTrendingGame.copyWithMutable(
@@ -1054,8 +850,6 @@ class Games with ChangeNotifier {
 
       //post titleImageURL here to Firebase storage
       //then _addedGame.titleImageURL = url from firebase
-      //maybe use try catch here and if error then return the method
-      //this should be put in try catch, return false early if fails
       if (imageFile != null) {
         try {
           final ref = FirebaseStorage.instance
@@ -1068,9 +862,6 @@ class Games with ChangeNotifier {
           await ref.putFile(imageFile).whenComplete(() => null).catchError((e) {
             print(e);
           });
-          //ref is a reference function
-          //the first child is the parent folder
-          //second child is the sub folder
 
           mutableGame.titleImageURL = await ref.getDownloadURL().catchError((e) {
             print(e);
@@ -1080,7 +871,6 @@ class Games with ChangeNotifier {
           ////rethrow;
         }
       }
-      //print("log1");
       if (imageFiles != null) {
         try {
           for (File imageFile in imageFiles) {
@@ -1103,41 +893,10 @@ class Games with ChangeNotifier {
           print(error);
         } catch (error) {
           print(error);
-          // //rethrow;
+          //rethrow;
         }
       }
-
-      //print("log2");
-
-      //addedGame is just for testing, we would create an instance of Game from user input later
-/*
-      final addedGame = Game(
-        title: mutableGame.title,
-        description: mutableGame.description,
-        longDescription: mutableGame.longDescription,
-        id: timestamp, //old it if it's in restore mode
-        msrp: mutableGame.msrp,
-        platform: mutableGame.platform,
-        titleImageURL: mutableGame.titleImageURL,
-        imageURLs: mutableGame.imageURLs,
-        //filters
-        isFavorite: mutableGame.isFavorite,
-        //mutableGame.isFavorite, //ignore this <a deleted game should be unfavorited>
-        //actually data should stay exactly the same so that we could find the exact match on the database
-        hasFinished: mutableGame.hasFinished,
-        hasPlayed: mutableGame.hasPlayed,
-        isDisliked: mutableGame.isDisliked, //mutableGame.isDisliked
-        //user
-        lastPlayDate: mutableGame.lastPlayDate,
-        userDescription: mutableGame.userDescription,
-        purchasePrice: mutableGame.purchasePrice,
-        userImageURLs: mutableGame.userImageURLs,
-        userRating: mutableGame.userRating,
-        userTitleImageURL: mutableGame.userTitleImageURL,
-        //trending
-        releaseDate: multableGame.releaseDate, //Timestamp.fromDate(mutableGame.releaseDate!) : null,
-      );
-      */
+      
       final addedGame = mutableGame.copyWith(id: timestamp, releaseDate: mutableGame.releaseDate);
 
       try {
@@ -1187,7 +946,7 @@ class Games with ChangeNotifier {
         print(error);
       } catch (error) {
         //print(error);
-        ////rethrow;
+        //rethrow;
       }
     } else if (gamesOption == GamesOption.trendingGames) {
       String timestamp;
@@ -1201,8 +960,6 @@ class Games with ChangeNotifier {
             .collection("trending_games")
             .doc("9M3SDp36oHDhBJ0AF1vM")
             .update(
-          //update will do nothing if we try to add an instance of game that already exists (every field is the same)
-          //so we should reflect this logic when dealing with _trendingGames too
           {
             "games": FieldValue.arrayUnion(
               [
@@ -1256,52 +1013,23 @@ class Games with ChangeNotifier {
     print("updateGame function");
     if (gamesOption == GamesOption.userGames) {
       final gameIndex = _games.indexWhere((game) => game.id == id);
+    /*
+    W/NetworkRequest(31639): No App Check token for request.
+    E/StorageException(31639): StorageException has occurred.
+    E/StorageException(31639): User does not have permission to access this object.
+    E/StorageException(31639):  Code: -13021 HttpResult: 403
+    E/StorageException(31639): {  "error": {    "code": 403,    "message": "Permission denied."  }}
+    E/StorageException(31639): java.io.IOException: {  "error": {    "code": 403,    "message": "Permission denied."  }}
+    E/StorageException(31639): 	at com.google.firebase.storage.network.NetworkRequest.parseResponse(NetworkRequest.java:445)
+    ...
+    */
 
-/*//see: document on how to enable app check: https://firebase.flutter.dev/docs/app-check/default-providers
-//see: https://stackoverflow.com/questions/39144629/how-to-add-sha-1-to-android-application on how to generate SHA 256
-//see: https://firebase.flutter.dev/docs/app-check/overview/
-//see: App Check Token for request: https://firebase.google.com/docs/app-check/custom-resource-backend
-//also see: https://stackoverflow.com/questions/49945312/delete-a-file-from-firebase-storage-using-download-url-with-cloud-functions
-//see: https://stackoverflow.com/questions/67559829/how-to-solve-w-networkrequest-no-app-check-token-for-request
-W/NetworkRequest(31639): No App Check token for request.
-E/StorageException(31639): StorageException has occurred.
-E/StorageException(31639): User does not have permission to access this object.
-E/StorageException(31639):  Code: -13021 HttpResult: 403
-E/StorageException(31639): {  "error": {    "code": 403,    "message": "Permission denied."  }}
-E/StorageException(31639): java.io.IOException: {  "error": {    "code": 403,    "message": "Permission denied."  }}
-E/StorageException(31639): 	at com.google.firebase.storage.network.NetworkRequest.parseResponse(NetworkRequest.java:445)
-E/StorageException(31639): 	at com.google.firebase.storage.network.NetworkRequest.parseErrorResponse(NetworkRequest.java:462)
-E/StorageException(31639): 	at com.google.firebase.storage.network.NetworkRequest.processResponseStream(NetworkRequest.java:453)
-E/StorageException(31639): 	at com.google.firebase.storage.network.NetworkRequest.performRequest(NetworkRequest.java:272)
-E/StorageException(31639): 	at com.google.firebase.storage.network.NetworkRequest.performRequest(NetworkRequest.java:289)
-E/StorageException(31639): 	at com.google.firebase.storage.internal.ExponentialBackoffSender.sendWithExponentialBackoff(ExponentialBackoffSender.java:76)
-E/StorageException(31639): 	at com.google.firebase.storage.internal.ExponentialBackoffSender.sendWithExponentialBackoff(ExponentialBackoffSender.java:68)
-E/StorageException(31639): 	at com.google.firebase.storage.DeleteStorageTask.run(DeleteStorageTask.java:59)
-E/StorageException(31639): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1137)
-E/StorageException(31639): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:637)
-E/StorageException(31639): 	at java.lang.Thread.run(Thread.java:1012)
-I/flutter (31639): [firebase_storage/unauthorized] User is not authorized to perform the desired action.
-*/
-
-/*
-after enable AppCheck: W/StorageUtil(17802): Error getting App Check token; using placeholder token instead. Error: com.google.firebase.FirebaseException: Error returned from API. code: 403 body: App attestation failed.
-Generate a debug token
-then see this: https://firebase.google.com/docs/app-check/android/debug-provider (for Android)
-see this for Flutter
-//see this: https://github.com/firebase/flutterfire/issues/7968 (IMPORTANT LINK)
-D/com.google.firebase.appcheck.debug.internal.DebugAppCheckProvider(32717): Enter this debug secret into the allow list in the Firebase Console for your project: c6641d27-6e4b-45f3-bcc2-01e6ba5adfb4
-*/
-
-//SOLUTION: it turns out the reason we cannot use delete() in Firebase storage is because
-//we have not modified the storage rule
-//initially it only allows users read and create
-//we need write in order to delete
+    //SOLUTION: it turns out the reason we cannot use delete() in Firebase storage is because
+    //we have not modified the storage rule
+    //initially it only allows users read and create
+    //we need write in order to delete
 
       if (gameIndex >= 0) {
-        //print("length of deleted storage image urls is: ");
-        // print(deletedStorageImageURLs.length);
-
-        //this would probably throw a storage exception since user are not allow to do
         if (deletedStorageImageURLs.isNotEmpty) {
           try {
             for (String storageImageURL in deletedStorageImageURLs) {
@@ -1314,10 +1042,10 @@ D/com.google.firebase.appcheck.debug.internal.DebugAppCheckProvider(32717): Ente
             }
           } on FirebaseException catch (error) {
             print(error);
-            ////rethrow;
+            //rethrow;
           } catch (error) {
             print(error);
-            ////rethrow;
+            //rethrow;
           }
         }
 
@@ -1333,42 +1061,12 @@ D/com.google.firebase.appcheck.debug.internal.DebugAppCheckProvider(32717): Ente
             }
           } on FirebaseException catch (error) {
             print(error);
-            // //rethrow;
+            //rethrow;
           } catch (error) {
             print(error);
-            // //rethrow;
+            //rethrow;
           }
         }
-
-        //for some really strange reason _games[gameIndex].imageURLs got modified during this process and grow in size
-        //render removeArray not actually remove anything
-        //this is the reason we have a tempImageURLsArray to initially store _games[gameIndex].imageURLs data
-        //so that we could use it in ArrayRemove
-
-        /*
-        code is from edit screen
-        Reason is SHALLOW COPY
-          List<String> tempArr = [];
-          for (int index = 0; index < _editedGame.imageURLs.length; index++) {
-            tempArr.add(_editedGame.imageURLs[index]);
-          }
-          _initialGame = Game(
-            id: _editedGame.id,
-            title: _editedGame.title,
-            description: _editedGame.description,
-            titleImageURL: _editedGame.titleImageURL,
-            imageURLs: tempArr, 
-            //_editedGame.imageURLs, //avoid pass by value for address (shallow copy)
-            //although it pass by value
-            //if we pass imageURLs: _editedGame.imageURLs, then it's the value of the address
-            //so they share the same data -> shallow copy
-            //this is why it wouldn't work and the update function gets logical error,
-            //since even we pass initialGame, imageURLs could miss an element
-            //renders arrayRemove not working
-            //so we have to use a for loop
-            //also findById also return an address
-            //and if we modify the list using _editedGame, it would change the _games array also!!!
-        */
 
         try {
           await FirebaseFirestore.instance
@@ -1387,18 +1085,12 @@ D/com.google.firebase.appcheck.debug.internal.DebugAppCheckProvider(32717): Ente
                     'title': initialGame.title, //_games[gameIndex].title,
                     'titleImageURL': initialGame.titleImageURL, //_games[gameIndex].titleImageURL,
                     'imageURLs': initialGame.imageURLs,
-                    //[...tempImageURLsArray],
-                    //_games[gameIndex].imageURLs,
-                    //for some really strange reason _games[gameIndex].imageURLs got modified during the update funcgtion,
-                    // and grow in size
-                    //render removeArray not actually remove anything
-                    //this is the reason we have a tempImageURLsArray to initially store _games[gameIndex].imageURLs data
-                    //so that we could use it in ArrayRemove
+                    //IMPORTANT: avoid shallow copy for array (imageURLs and userImageURLs)
                     //REASON: shallow copy (arrays share the same address passed by value)
                     //since we modify imageURLs array, it affect others that share the same address
                     //also findById returns a value of the address and it's still shallow copy
-                    //so unreliable to use _games[index]
-                    //MUST use initialGame, or initial imageURLs array stored by a temp array
+                    //therefore, it's unreliable to use _games[index]
+                    //MUST use initialGame, or array for initial imageURLs (deep copy to a temp array)
                     //filters
                     'isFavorite': initialGame.isFavorite, //_games[gameIndex].isFavorite,
                     'hasFinished': initialGame.hasFinished,
@@ -1413,11 +1105,12 @@ D/com.google.firebase.appcheck.debug.internal.DebugAppCheckProvider(32717): Ente
                         : (initialGame.userImageURLs!.isEmpty)
                             ? null
                             : initialGame.userImageURLs,
+                    //use the above code instead
                     /*
                         (initialGame.userImageURLs != null && initialGame.userImageURLs!.isEmpty)
                             ? null
                             : initialGame.userImageURLs,
-                            */
+                    */
                     'lastPlayDate': initialGame.lastPlayDate,
                     'userRating': encodeRating(initialGame.userRating),
                     'releaseDate': initialGame.releaseDate,
@@ -1444,19 +1137,16 @@ D/com.google.firebase.appcheck.debug.internal.DebugAppCheckProvider(32717): Ente
               await ref.putFile(imageFile).whenComplete(() => null).catchError((e) {
                 print(e);
               });
-              //ref is a reference function
-              //the first child is the parent folder
-              //second child is the sub folder
 
               storedTitleImageURL = await ref.getDownloadURL().catchError((e) {
                 print(e);
               });
             } on FirebaseException catch (error) {
               print(error);
-              ////rethrow;
+              //rethrow;
             } catch (error) {
               print(error);
-              ////rethrow;
+              //rethrow;
             }
           }
 
@@ -1590,11 +1280,6 @@ D/com.google.firebase.appcheck.debug.internal.DebugAppCheckProvider(32717): Ente
             print(error);
             print(stackTrace.toString());
           });
-          /*
-          _games[gameIndex] = (storedTitleImageURL == null)
-              ? editedGame
-              : editedGame.copyWith(id: id, titleImageURL: storedTitleImageURL);
-              */
           _games[gameIndex] = editedGame.copyWith(
             id: id,
             titleImageURL: (storedTitleImageURL == null) ? null : storedTitleImageURL,
@@ -1689,8 +1374,6 @@ D/com.google.firebase.appcheck.debug.internal.DebugAppCheckProvider(32717): Ente
     }
   }
 
-//see Firebase arrayRemove: https://cloud.google.com/firestore/docs/manage-data/add-data
-//permanently delete (compare with putToTrash)
   Future<Game?> deleteGame(
     String id,
     GamesOption gamesOption, {
@@ -1713,16 +1396,11 @@ D/com.google.firebase.appcheck.debug.internal.DebugAppCheckProvider(32717): Ente
       deletedGame = _games.elementAt(deletedGameIndex); //remove from the list
       //but is still accessible before garbage collection
       _games.removeAt(deletedGameIndex);
-      /*
-    temp_data.deletedGame = deletedGame;
-    temp_data.restorableDeletedGames.add(deletedGame);
-    */
+
     } else {
       if (isDeleteLast == true && _trashGames.isNotEmpty) {
         deletedGameIndex = _trashGames.length - 1;
-      } /* else if (knownIndex != null) {
-        deletedGameIndex = knownIndex;
-      }*/
+
       else {
         deletedGameIndex = _trashGames.indexWhere((trashGame) => trashGame.id == id);
       }
@@ -1881,35 +1559,14 @@ D/com.google.firebase.appcheck.debug.internal.DebugAppCheckProvider(32717): Ente
         _trashGames.insert(deletedGameIndex, deletedGame);
       }
       notifyListeners();
-
-      //on delete fail
-      /*
-      temp_data.deletedGame = null;
-      temp_data.restorableDeletedGames.removeLast();
-      */
-      //if cannot delete then we should remove the last element (just added to) from temp_data.deletedGames
-      //set temp_data.deletedGame to null again!
-
       print(error);
-      //return null;
       //rethrow;
-
       //null value would be returned on deleting fail
     }
     return null; // in case cannot delete
   }
 
   Future<void> undoDeleteGame(Game? deletedGame) async {
-    //undoDeleteGame is very similar to addGame; after deleting an entry in the realtime database
-    //when we "undo", we should create a new one on the database using post
-    //since id is randomly generated, we cannot keep the old id, instead just accept from now on
-    //that the game would have a different id
-    //also, we should store the just deleted item at its previous index (deletedIndex)
-    //by using insert instead of add for _items
-    //final url = Uri.parse('https://my-shop-9ea08-default-rtdb.firebaseio.com/games.json');
-
-    //with our logic temp_data.deletedGame wouldn't be null,
-    //but just to make sure
 
     if (deletedGame == null) {
       return;
@@ -1920,8 +1577,6 @@ D/com.google.firebase.appcheck.debug.internal.DebugAppCheckProvider(32717): Ente
           .collection("users")
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .update(
-        //update will do nothing if we try to add an instance of game that already exists (every field is the same)
-        //so we should reflect this logic when dealing with _games too
         {
           "games": FieldValue.arrayUnion(
             [
@@ -1956,19 +1611,11 @@ D/com.google.firebase.appcheck.debug.internal.DebugAppCheckProvider(32717): Ente
         print(error);
         print(stackTrace.toString());
       });
+      
       //actually we don't need to remember the deletedIndex, since we sort the array each time we undo delete,
       //so the item will be at its original position after the array being sorted
 
       _games.add(deletedGame);
-      /*
-      temp_data.deletedGame = null;
-      temp_data.restorableDeletedGames.removeLast();
-      */
-      //_games.insert(deletedIndex, temp_data.deletedGame as Game);
-
-      //_items.add(newGame);
-      //this potentially be null so we should use try catch
-      //either in Games class or outside (if use here then should not //rethrow)
 
       notifyListeners();
     } on FirebaseException catch (error) {
@@ -2034,8 +1681,8 @@ D/com.google.firebase.appcheck.debug.internal.DebugAppCheckProvider(32717): Ente
   }
 
   Future<void> toggleWishlist(Game trendingGame, {required bool toggleOption}) async {
-    //this function only works if we know if a function is wishlist or not
-    //so gotta have some function to do that and store a bool value for each trending game item
+    //this function only works if we know if we know in advance a game is in wishlist or not
+    //see the isInWIshlist function
     if (toggleOption == true) {
       await FirebaseFirestore.instance
           .collection("users")
@@ -2107,41 +1754,3 @@ D/com.google.firebase.appcheck.debug.internal.DebugAppCheckProvider(32717): Ente
   }
 }
 
-
-//this code is for Custom Objec (Firebase supports Custom Object), but the code doesn't really work for now
-/*
-  Future<void> addGame() async {
-    final addedGame = Game(
-      title: "Hogwarts Legacy",
-      description: "Fulfilling your dream of living in the world of Harry Porter.",
-      id: "g3",
-      msrp: 69.99,
-      platform: Platform.PS5,
-      titleImageURL:
-          "https://assets-prd.ignimgs.com/2022/05/24/hogwarts-legacy-button-fin-1653421326559.jpg",
-      imageURLs: [
-        "https://assets-prd.ignimgs.com/2022/03/18/hogwarts-legacy-4-1647622573681.jpeg",
-      ],
-    );
-
-    try {
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .update(
-        {
-          "games": FieldValue.arrayUnion(
-            [
-              addedGame,
-            ],
-          ),
-        },
-      );
-      _games.add(addedGame);
-      notifyListeners();
-    } catch (error) {
-      //print(error);
-      //rethrow;
-    }
-  }
-  */
