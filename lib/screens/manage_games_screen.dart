@@ -1,6 +1,3 @@
-//see: https://stackoverflow.com/questions/46651974/swipe-list-item-for-more-options-flutter
-//for slideable package
-
 //packages
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -35,32 +32,11 @@ class ManageGamesScreen extends StatelessWidget {
         key: parentKey,
         children: [
           Scaffold(
-            /*
-            bottomSheet: Container(
-              padding: const EdgeInsets.all(8),
-              height: 35,
-              width: double.infinity,
-              color: Colors.grey.withOpacity(0.25),
-              child: const FittedBox(
-                child: Text(
-                  "TIPS: Swipe left to delete a game",
-                  style: TextStyle(fontSize: 17),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-            */
+
             appBar: _appBarBuilder(context),
             //we use refresh in the case we delete something directly from the database server
             //and then reload our screen
-            body: /*FutureBuilder(
-              future: _refreshGames(context),
-              builder: (ctx, asyncSnapshot) =>
-                  asyncSnapshot.connectionState == ConnectionState.waiting
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : */
+            body: 
                 SafeArea(
               child: RefreshIndicator(
                 onRefresh: () => _refreshGames(context),
