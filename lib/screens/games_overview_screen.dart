@@ -1,9 +1,3 @@
-/*
-════════ Exception caught by gesture ═══════════════════════════════════════════
-setState() called after dispose(): _GamesOverviewScreenState#0bcc4(lifecycle state: defunct, not mounted)
-════════════════════════════════════════════════════════════════════════════════
-
-*/
 //Firebase
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -36,29 +30,20 @@ class GamesOverviewScreen extends StatefulWidget {
 }
 
 class _GamesOverviewScreenState extends State<GamesOverviewScreen> {
+  bool _isDidChangeDependencies = false;
+  
   String? _userImageURL;
   String? _userName = "";
   String? _userEmail = "";
-  //bool isLoadingImage = false;
-
+  
   late List<Map<String, Object>> _pages;
+  
 
-  //bool _isFetchingData = false;
-
-  //remember to add this check (_isDidChangeDependencies) or we could go to an infinite loop
-  //due to loading provider
-  //also limit the use of using Provider.of<class with ChangeNotifier>(context) in build method
-  //since it can potentially lead to an infinite loop too
-  bool _isDidChangeDependencies = false;
-  //this flag is super important to avoid infinite loop while using provider
 
   late Map<String, bool> _myCollectionFilters;
   late UserPreferences _myFilters;
+  
   //bool _isLoading = false;
-
-  //see how to use FutureBuilder instead of didChangeDependencies in TrendingGamesScreen
-
-  //late final bool _isAndroid;
 
   @override
   void didChangeDependencies() {
@@ -68,9 +53,7 @@ class _GamesOverviewScreenState extends State<GamesOverviewScreen> {
       try {
         if (temp_data.isFetchUserGames == false) {
           Future.delayed(const Duration(
-                  seconds: 1, milliseconds: 750)) //around 1.5 miliseconds to 2 seconds
-              //else if filter is not empty, then data could be partially fetched, so we should wait a bit
-              .then((_) async {
+                  seconds: 1, milliseconds: 750)).then((_) async {
             await Provider.of<Games>(context, listen: false).fetchGames(GamesOption.userGames);
             print("Fetching User's Games successfully");
           });
@@ -99,7 +82,7 @@ class _GamesOverviewScreenState extends State<GamesOverviewScreen> {
     }
     _isDidChangeDependencies = true;
 
-    //the else case is kinda redundant since we already load user info at main (app launch)
+    //the else case for the below code is kinda redundant since we already load user's info from server in main.dart
     if (user_info.hasLoadedCredential) {
       print("case1");
       _userImageURL = user_info.userImageURL;
@@ -152,34 +135,10 @@ class _GamesOverviewScreenState extends State<GamesOverviewScreen> {
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     print("build games overview screen");
-    //appBarWidget should be built here, not in didChangeDependencies since it wouldn't load the user avatar there
     final PreferredSizeWidget appBarWidget = appBarBuilder();
-    //final MediaQueryData mediaQueryData = MediaQuery.of(context);
-    //final bool isPortrait = mediaQueryData.orientation == Orientation.portrait;
-    /*
-      print(mediaQueryData.size.height -
-      mediaQueryData.padding.top -
-      mediaQueryData.padding.bottom -
-      appBarWidget.preferredSize.height -
-      kBottomNavigationBarHeight);
-    */
 
-    //kBottomNavigationBarHeight is the default height of bottom navigation bar
-
-    //remember to add this check didChangeDependencies (_isDidChangeDependencies) or we could go to an infinite loop
-    //due to loading provider
-    //also limit the use of using Provider.of<class with ChangeNotifier>(context) in build method
-    //since it can potentially lead to an infinite loop too
-
-    final GlobalKey parentKey = GlobalKey();
-    //print("build from GamesOverViewScreen");
-    /*
-    setState(() {
-      _userImageURLFuture!.then((val) {
-        _userImageURL = val;
-      });
-    });
-    */
+    final GlobalKey parentKey = GlobalKey(); //for floating action button
+    
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -281,15 +240,20 @@ class _GamesOverviewScreenState extends State<GamesOverviewScreen> {
               if (!mounted) return;
               //don't forget to pop the menu or else these menus would stack upon each other
               Navigator.of(context).pop();
+              
               _recursiveShowFiltersMenu();
-
               /*
-              The reason we use a recursive function in this case is because showMenu wouldn't update to a new Menu
-              so even if we click on the switch, it wouldn't show
-              by using a recursive function, another Menu would appear to replace this one
+              The reason we use a recursive function in this case is because the poped up menu from showMenu is fixed, 
+              and wouldn't update to a new menu even if we use setState
+              (Even if we toggle its switches, it wouldn't reflect this change to the UI)
+              
+              by using a recursive function, another Menu would appear to replace the previous one
+              
               The recursive call only happen when there is change to the boolValue
-              it could be on a nonterminated while loop, but that while loop is 'on hold'
-              don't forget to pop the menu or else these menus would stack upon each other
+              it could be on a nonterminated while loop, but each iteration of that while loop is 'on hold'
+              
+              don't forget to pop the previous menu first because showing a new menu 
+              or else these menus would stack upon each other
               */
             },
           ),
