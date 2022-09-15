@@ -361,20 +361,7 @@ class _EditGameExperienceScreenState extends State<EditGameExperienceScreen> {
           print(e);
         }
       }
-      //https://firebasestorage.googleapis.com/v0/b/video-games-backlog.appspot.com/o/users%2FvRzo1kGFObWY9yrpgs4Ne6roY0p1       %2Fgames%2FTimestamp(seconds%3D1662003845%2C%20nanoseconds%3D959119000)%2FimageURLs%2FTimestamp(seconds%3D1662003847%2C%20nanoseconds%3D172432000)?alt=media&token=ae0be72c-0dca-4f44-bd3f-7c014bd57a54
-      //https://firebasestorage.googleapis.com/v0/b/video-games-backlog.appspot.com/o/users%2FvRzo1kGFObWY9yrpgs4Ne6roY0p1       %2Fgames%2FTimestamp(seconds%3D1661786037%2C%20nanoseconds%3D327339000)%2FimageURLs%2FTimestamp(seconds%3D1662009162%2C%20nanoseconds%3D745436000)?alt=media&token=88ffbc5d-e87f-46e6-88a6-620f40d40453
     }
     setState(() {});
   }
-
-/*
-  void _storeDeletedURLIndices(int index) {
-    //print("Deleted index is: ");
-    if (_providedGame.userImageURLs![index].startsWith(
-        'https://firebasestorage.googleapis.com/v0/b/video-games-backlog.appspot.com/o/users%2F${FirebaseAuth.instance.currentUser!.uid}')) {
-      _deletedStorageImageURLs.add(_providedGame.userImageURLs![index]);
-    }
-    //print(_providedGame.userImageURLs[index]);
-  }
-  */
 }
