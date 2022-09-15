@@ -35,24 +35,14 @@ class _TrendingGameItemState extends State<TrendingGameItem> {
   final List<Widget> _images = [];
   //must set here since initialization of _isInWishlist depends on asynchronous code
   //if we don't set it here then it would go through the asynchronous function without being initialized
-  //at the very begininning, the favorite icon would be a border, but then if returnValue is true (different from isInWishList)
-  //then setState is called to make it right
+  //at the very begininning, the favorite icon would be favorite_border, but then if returnValue is true
+  //then setState is called to make the icon favorite (full)
   @override
   void didChangeDependencies() {
     _providedTrendingGame = Provider.of<Game>(context, listen: false);
     _isInWishlist =
         Provider.of<Games>(context, listen: false).isInWishlist(_providedTrendingGame.id);
-    /*
-    Future.delayed(const Duration(seconds: 0)).then((_) async {
-      bool returnValue;
-      returnValue = await _providedTrendingGame.isInWishlist();
-      if (_isInWishlist != returnValue) {
-        setState(() {
-          _isInWishlist = returnValue;
-        });
-      }
-    });
-    */
+
     _releaseDate = (_providedTrendingGame.releaseDate == null)
         ? null
         : _providedTrendingGame.releaseDate!.toDate();
@@ -86,18 +76,9 @@ class _TrendingGameItemState extends State<TrendingGameItem> {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final bool isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
-    //some games don't have a release date so release date possibly could be null
-
-    //final Axis scrollDirection = (Random().nextInt(100) > 50) ? Axis.vertical : Axis.horizontal;
-    //final ScrollController scrollBarController = ScrollController();
-
-    //final String platform = platformToString(_providedTrendingGame.platform);
-
     _currentImageIndex = Random().nextInt(_providedTrendingGame.imageURLs.length);
     print("build trending game item");
 
-    //In order to put Rows/Columns in Columns/Rows we should first wrap the children elements (inside) with Flexible first
-    //also for nicely format, should wrap the root with LayoutBuilder for constraints of width and height
 
     return LayoutBuilder(builder: (context, constraints) {
       return Column(
