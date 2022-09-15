@@ -33,25 +33,6 @@ class GamesGrid extends StatelessWidget {
     } else {
       crossAxisCount = 1;
     }
-
-    //final gamesData = Provider.of<Games>(context);
-    //final games = (showFavoritesOnly) ? gamesData.favoriteGames : gamesData.games;
-    /*return /*(games.isEmpty && showFavoritesOnly)
-        ? const Center(
-            child: Text(
-              "Do you know that the best story-telling games out there could give us more beautiful stories than any blockbuster's. You have no favorite games yet, so start to love some!",
-              textAlign: TextAlign.center,
-            ),
-          )
-        : (games.isEmpty)
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : */
-        FutureBuilder(
-            future: _refreshGamesGrid(context),
-            builder: (context, snapshot) {
-              */
     return RefreshIndicator(
       onRefresh: () => _refreshGamesGrid(context),
       child: Consumer<Games>(
