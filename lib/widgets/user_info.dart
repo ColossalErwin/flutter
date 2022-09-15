@@ -27,20 +27,8 @@ class UserInformation extends StatelessWidget {
   }) : super(key: key);
 
   void _logout(BuildContext context, NavigatorState navigatorState, Games gamesData) async {
-    //save navigatorState (i.e. Navigator.of(context)) to deal with
-    //trying to access widget's ancestor which is unsafe
-    //why try to use a pop up dialog for this user avatar _logout function?
-    //because unlike appdrawer's _logout
-    //this _logout pop the last page and go to black page
-    //so it pop one more than it should
-    //even though having the same code
-    //1/ while (canPop) pop
-    //2/ set temp_data empty/null
-    //3/ await signOut
-    //Thus in order to replicate successful log out from the AppDrawer
-    //notice that AppDrawer is treated like a page and we actually pop it one
-    //so use something that we can pop like the AppDrawer
-    //the easy choice is a popup dialog to replicated popping the appdrawer "page"
+    //save navigatorState (i.e. Navigator.of(context)) to deal with the error
+    //trying to access widget's ancestor
     await showDialog<void>(
       context: context,
       builder: (ctx) {
@@ -52,7 +40,6 @@ class UserInformation extends StatelessWidget {
               child: const Text("Close"),
               onPressed: () async {
                 navigatorState.pop();
-                //replace Navigator.of(context)
               },
             ),
             TextButton(
@@ -62,10 +49,6 @@ class UserInformation extends StatelessWidget {
                   navigatorState.pop();
                 }
                 gamesData.reset();
-                //Games gamesData = Provider.of<Games>(context, listen: false);
-                //setEmpty's purpose is to avoid next user seeing data from previous user after loggin in
-                //set _games and _trendingGames to empty
-                //maybe we should also store Provider.of<Games>(context) since it uses context
                 temp_data.reset();
                 user_info.reset();
                 await FirebaseAuth.instance.signOut();
@@ -75,54 +58,6 @@ class UserInformation extends StatelessWidget {
         );
       },
     );
-    /*
-    while (Navigator.of(context).canPop()) {
-      Navigator.of(context).pop();
-      //have to do this since there're problems with login out
-      //after we direct to GamesOverviewScreen from the AppDrawer
-    }
-
-    //though we should use await for signOut since it's asynchronous
-    //using await here would not work (after signOut attempting to sign in again wouldn't work)
-    //BUT DOES IT ACTUALLY SIGN OUT???
-    //check if hasData of snapshot from the StreamBuilder is false?
-    //with this code it is
-
-    //await Future.delayed(const Duration(seconds: 1));
-    temp_data.deletedGames = [];
-    temp_data.isFetchUserGames = false;
-    temp_data.isFetchTrendingGames = false;
-    user_info.userImageURL = null;
-    user_info.username = null;
-    user_info.userEmail = null;
-    ////if we use pop then we can't actually signout if we enter custom gamesoverviewscreen
-    FirebaseAuth.instance.signOut();
-    //will go to blank page (black screen) if use while {pop} and then sign out
-    //D/FirebaseAuth(12663): Notifying id token listeners about a sign-out event.
-    //D/FirebaseAuth(12663): Notifying auth state listeners about a sign-out event.
-    //unlike AppDrawer's _logout for some reason
-    //probably related to the drawer being open when _logout
-    //so gotta push the AuthScreen at the end to avoid this issue
-
-    //the problem with signOut might be related to not changing the function to async
-    //since signOut handling with Firebase and its return type is a Future
-    //however, when changing to async and await the signOut function
-    //then after sign out we cannot actually sign in again
-    //doesn't really work as intended
-
-    //convert this widget to stateful only to use this push function at the end to go back to the Auth Screen
-    //since with the current code it would go to a black screen (pop more than it should)
-    //and we have to avoid "Do not use BuildContexts across async gaps." by using "mounted"
-    //which is a property of a State class
-
-    if (!mounted) return;
-    Navigator.push(
-      context,
-      CustomRoute(
-        builder: (context) => const AuthScreen(),
-      ),
-    );
-    */
   }
 
   @override
