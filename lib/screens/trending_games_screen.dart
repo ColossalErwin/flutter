@@ -1,5 +1,3 @@
-//trending games screen should have refresh feature since the developer updates info on this side
-
 //Firebase
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,12 +14,6 @@ import '../widgets/trending_games_grid.dart';
 import '../widgets/user_info.dart';
 //temp data
 import '../temp_data/user_info.dart' as user_info;
-/*
-enum SelectedTrendingPage {
-  all,
-  wishlist,
-}
-*/
 
 class TrendingGamesScreen extends StatefulWidget {
   //final SelectedTrendingPage? selectedTrendingPage;
@@ -40,10 +32,7 @@ class _TrendingGamesScreenState extends State<TrendingGamesScreen> {
 
   //bool _isFetchingData = false;
 
-//remember to add this check didChangeDependencies (_isDidChangeDependencies) or we could go to an infinite loop
-//due to loading provider
-//also limit the use of using Provider.of<class with ChangeNotifier>(context) in build method
-//since it can potentially lead to an infinite loop too
+  //remember to add this check didChangeDependencies (_isDidChangeDependencies) or we could go to an infinite loop
   bool _didChangeDependencies = false;
 
   int _selectedPageIndex = 0; //0 is All Trending Games page, 1 is Wishlist page
@@ -66,12 +55,7 @@ class _TrendingGamesScreenState extends State<TrendingGamesScreen> {
       //since we use FutureBuilder there's no need to fetch data again
 
       Future.delayed(const Duration(seconds: 0)).then((_) async {
-        //Provider.of<Games>(context, listen: false).reset();
-        //maybe fetch both trending games and wishlist games is better
-        //so that we can check if a game is in _wishlist locally
-        /*
-        await Provider.of<Games>(context, listen: false).fetchGames(
-            (_selectedPageIndex == 0) ? GamesOption.trendingGames : GamesOption.wishlistGames);*/
+        //can also fetch from main
         await Provider.of<Games>(context, listen: false).fetchGames((GamesOption.trendingGames));
         if (!mounted) return;
         await Provider.of<Games>(context, listen: false).fetchGames((GamesOption.wishlistGames));
@@ -118,17 +102,6 @@ class _TrendingGamesScreenState extends State<TrendingGamesScreen> {
   Widget build(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     print("build trending games screen");
-    //remember to add this check didChangeDependencies (_isDidChangeDependencies) or we could go to an infinite loop
-    //due to loading provider
-    //also limit the use of using Provider.of<class with ChangeNotifier>(context) in build method
-    //since it can potentially lead to an infinite loop too
-
-    //bool backlogFilter = false;
-    //There are two approaches to the fetchAndSetGames function
-    //in this case we don't use it in initState/didChangeDependencies
-    //but rather in a FutureBuilder
-    //since fetchAndSetGames is a future
-    //by using FutureBuilder we don't have to use delayed in didChangeDependencies since we can simply use an async function
 
     return DefaultTabController(
       length: 2,
@@ -137,15 +110,6 @@ class _TrendingGamesScreenState extends State<TrendingGamesScreen> {
         appBar: AppBar(
           title: FittedBox(child: Text(_pages[_selectedPageIndex]['title'] as String)),
           actions: [
-            /*
-            IconButton(
-              tooltip: "Filters",
-              icon: const Icon(Icons.filter_list_outlined),
-              onPressed: () {
-                //_recursiveShowMenuIndex0();
-              },
-            ),
-            */
             IconButton(
               tooltip: "Search",
               icon: const Icon(Icons.search),
