@@ -1,18 +1,8 @@
-//could specify portrait title image and landscape title image for a game
-
 //Firebase
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 //packages
 import 'package:flutter/material.dart';
-
-/*
-enum TrendingGamesGridOption {
-  one,
-  two,
-  four,
-}
-*/
 
 enum Platform {
   // ignore: constant_identifier_names
@@ -37,19 +27,9 @@ enum Platform {
   PC,
   // ignore: constant_identifier_names
   others,
-
-  /*
-  // ignore: constant_identifier_names
-  XboxOne,
-  // ignore: constant_identifier_names
-  XboxS, //series S
-  // ignore: constant_identifier_names
-  XboxS_and_XboxX,
-  // ignore: constant_identifier_names
-  XboxX //series X
-  */
 }
 
+//have not implement Genre feature
 enum Genre {
   action,
   adventure,
@@ -257,8 +237,6 @@ class Game with ChangeNotifier {
   //if there is no prequel, then default value should be 80
   final Timestamp? deletedTime; //for deleted items in the trash
   //Map<String, String> buyingLinks. For example {'Amazon': "AmazonLink", 'Target': "TargetLink",}
-  //lastPlayed
-  //havePlayed
 
   //bool hasFinished;
   //double metacriticRating; //this is hard and must use some scraping tool -> potentially dealing with code that is not Dart
@@ -268,12 +246,7 @@ class Game with ChangeNotifier {
   final String description; //short description
   final String? longDescription; // longer description
   final String titleImageURL;
-  List<String> imageURLs; //require user input (image picker), must be at least one
-  //we'll use the first URL as main image, or should we create another variable
-  //since maybe it add to the Firebase database randomly and when we retrieve
-  //we wouldn't get the order that we want
-  //we'll see
-  //if we have them separately then imageURLs can be empty and not required.
+  List<String> imageURLs;
   final double msrp;
 
   Timestamp? releaseDate; //for upcoming/trending games
@@ -288,13 +261,6 @@ class Game with ChangeNotifier {
   Timestamp? lastPlayDate;
 
   //List<Genre> genres;
-
-  //final bool hasFinished;
-  //sorting should base on lastPlayDate
-  //and hasFinished
-  //hasFinished hasFinishedButNotFinished and hasNotPlayed should belong to Map<String, bool>
-  //and they should affect each other
-  //havePlayedButNotFinished games should be prioritized over never played
 
   bool isFavorite;
   bool isDisliked;
@@ -481,11 +447,8 @@ class Game with ChangeNotifier {
   }
 
 //see: https://stackoverflow.com/questions/46757614/how-to-update-an-array-of-objects-with-firestore
-//see this to see why we cannot modify an element of the array easily: https://www.youtube.com/watch?v=o7d5Zeic63s&list=PLl-K7zZEsYLluG5MCVEzXAQ7ACZBCuZgZ&t=525s
-//to MAKE UP for this (each time we toggle favorite, the games array on Firebase gets rearranged)
-//thus when we refresh the page, they are in different positions!
-//we should have a filter by date of latest plays, or filter by names!
-//we can use arrayRemove and then arrayUnion, but what's the point of that?, it's just a minor field
+//see this to see why we cannot modify an element of Firebase array easily: https://www.youtube.com/watch?v=o7d5Zeic63s&list=PLl-K7zZEsYLluG5MCVEzXAQ7ACZBCuZgZ&t=525s
+
   Future<void> toggleFavorite() async {
     bool oldStatus = isFavorite;
     try {
@@ -828,97 +791,6 @@ class Game with ChangeNotifier {
       //rethrow;
     }
   }
-/*
-  Future<bool> isInWishlist() async {
-    bool isInWishList = false;
-    //this function only works if we know if a function is wishlist or not
-    //so gotta have some function to do that and store a bool value for each trending game item
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get()
-        .then(((docSnapShot) async {
-      final mapData = (docSnapShot.data() as Map<String, dynamic>);
-      if (mapData.containsKey('wishlist')) {
-        for (final gameData in mapData['wishlist'] as List<dynamic>) {
-          if (id == gameData['id']) {
-            isInWishList = true;
-            break;
-          }
-        }
-      } else {
-        isInWishList = false;
-      }
-    }));
-    return isInWishList;
-  }
-  */
-
-/*
-  Future<void> toggleWishlist({
-    required String trendingGameID,
-    required bool isArrayRemoveMode,
-  }) async {
-    //idea: algorithm would be O(N*M)
-    //N is length of trending games
-    //M is length of list of ids for wishlisted trending_games
-
-    bool containsWishlistKey = false;
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get()
-        .then(
-      ((docSnapShot) async {
-        //see: https://stackoverflow.com/questions/69108424/cannot-check-containskey-on-documentsnapshot
-        containsWishlistKey = (docSnapShot.data() as Map<String, dynamic>).containsKey('wishlist');
-        if (containsWishlistKey == false) {
-          await FirebaseFirestore.instance
-              .collection("users")
-              .doc(FirebaseAuth.instance.currentUser!.uid)
-              .update(
-            {
-              "wishlist": FieldValue.arrayUnion(
-                [trendingGameID],
-              ),
-            },
-          ).onError((error, stackTrace) {
-            print(error);
-            print(stackTrace.toString());
-          });
-        } else {
-          final List<String> trendingGameIDs = docSnapShot.data()!['wishlist'] as List<String>;
-          for (final String id in trendingGameIDs) {
-            if (trendingGameID == id) {}
-          }
-        }
-      }),
-    );
-    
-
-/*
-      final List<Game> loadedTrashGames = [];
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .get()
-          .then(
-        ((value) async {
-          final trashGamesList = value["trashGames"] as List<dynamic>;
-          for (final trashGame in trashGamesList) {
-            List<String> urls = [];
-            for (final url in trashGame['imageURLs']) {
-              urls.add(url as String);
-            }
-            List<String> userURLs = [];
-            if (trashGame['userImageURLs'] != null) {
-              for (final url in trashGame['userImageURLs']) {
-                userURLs.add(url as String);
-              }
-            }*/
-    notifyListeners();
-  }
-  */
 
   Future<void> updateRating(Rating? rating) async {
     //bool oldStatus = isDisliked;
@@ -1544,92 +1416,6 @@ final List<Game> demoGames = [
     ],
   ),
 ];
-  /*
-  factory Game.fromFirestore(
-    DocumentSnapshot<Map<String, dynamic>> snapshot,
-    SnapshotOptions? options,
-  ) {
-    final data = snapshot.data();
-    final Platform decodedPlatform; //Firebase doesn't support enum
-    if (data?['platform'] == 0) {
-      decodedPlatform = Platform.PS4;
-    } else if (data?['platform'] == 1) {
-      decodedPlatform = Platform.PS5;
-    } else {
-      decodedPlatform = Platform.PS4_and_PS5;
-    }
-    return Game(
-      id: data?['id'],
-      title: data?['title'],
-      platform: decodedPlatform,
-      description: data?['description'],
-      titleImageURL: data?['titleImageURL'],
-      msrp: data?['msrp'],
-      //regions: data?['regions'] is Iterable ? List.from(data?['regions']) : null,
-    );
-  }
 
-  Map<String, dynamic> toFirestore() {
-    final int encodedPlatform; //Firebase doesn't support enum
-    if (platform == Platform.PS4) {
-      encodedPlatform = 0;
-    } else if (platform == Platform.PS5) {
-      encodedPlatform = 1;
-    } else {
-      encodedPlatform = 2;
-    }
-    return {
-      "id": id,
-      "title": title,
-      "platform": encodedPlatform,
-      "description": description,
-      "titleImageURL": titleImageURL,
-      "msrp": msrp,
-    };
-  }
-  */
-
-/*
-  Future<void> toggleFavoriteStatus(String token, String userID) async {
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-    final oldStatus = isFavorite;
-    isFavorite = !isFavorite;
-    notifyListeners();
-    final url = Uri.parse(
-        "https://my-shop-9ea08-default-rtdb.firebaseio.com/userFavorites/$userID/$id.json?auth=$token"); //id is productID
-
-    try {
-      FirebaseFirestore.instance.collection('users/$uid').add(
-        {
-          'text': _enteredMessage,
-          'createdAt': Timestamp.now(), //this is the timestamp to use orderBy method
-          //Timestamp is supported by Cloud Firestore database
-          'userID': user.uid,
-          'username': userData.data()!['username'],
-          'userImage': userData.data()!['image_url'],
-        },
-      );
-      /*
-      final response = await http.patch(
-        url,
-        body: json.encode({"isFavorite": !oldStatus}),
-      );
-      */
-      final response = await http.put(
-        url,
-        body: json.encode(isFavorite),
-      );
-      if (response.statusCode >= 400) {
-        isFavorite = oldStatus; //set back to the old isFavorite if HTTPException occurs
-        notifyListeners();
-        throw HTTPException("Could not update the product");
-      }
-    } on HTTPException {
-      //
-    } catch (error) {
-      //
-    }
-  }
-  */
 
 
