@@ -1,7 +1,7 @@
 # Videogames backlog project
 
 Hi, I'm Hieu Tran, at UT Dallas. I am a Junior - Senior Computer Science student, and currently I am learning to become a good mobile developer.
-This project is a joy of mine and I spent a whole month only working on it to make sure it's nearly bug-free; I did sacrifice a bit of my GPA for this one.
+This project is a joy of mine and I spent a whole month only working on it, just to make sure it's nearly bug-free; I did sacrifice a bit of my GPA for this one, but it's ok since making mobile apps has become one of my hobbies.
 
 This application uses Cloud Firestore and Firebase Storage as its database.
 Application feature:
