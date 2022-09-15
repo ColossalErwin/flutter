@@ -1,1 +1,1 @@
-//private implementation (similar to edit game screen, but lighter)
+//similar to edit game screen, but much shorter
