@@ -37,68 +37,23 @@ class GameItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 child: GestureDetector(
                   onTap: () {
-                    /*
-                      print('push game detail page');
-                      Navigator.of(context).pushNamed(
-                        GameDetailScreen.routeName,
-                        arguments: providedGame.id,
-                      );
-                      */
                     Navigator.of(context).pushNamed(
                       GameDetailScreen.routeName,
                       arguments: providedGame.id,
                     );
-                    /*
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        GameDetailScreen.routeName,
-                        arguments: providedGame.id,
-                        (route) => route.isFirst,
-                        //ModalRoute.withName(GamesOverviewScreen.routeName),
-                      );
-                      */
                   },
                   child: GestureDetector(
                     onTap: () {
-                      /*
-                      print('push game detail page');
                       Navigator.of(context).pushNamed(
                         GameDetailScreen.routeName,
                         arguments: providedGame.id,
                       );
-                      */
-                      Navigator.of(context).pushNamed(
-                        GameDetailScreen.routeName,
-                        arguments: providedGame.id,
-                      );
-                      /*
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                          GameDetailScreen.routeName,
-                          arguments: providedGame.id,
-                          (route) => route.isFirst,
-                          //ModalRoute.withName(GamesOverviewScreen.routeName),
-                      );
-                      */
                     },
                     child: GridTile(
                       header: SizedBox(
                         height: constraints.maxHeight / 2.75,
                         child: GestureDetector(
                           onTap: () {
-                            /*
-                              print('push game detail page');
-                              Navigator.of(context).pushNamed(
-                                GameDetailScreen.routeName,
-                                arguments: providedGame.id,
-                              );
-                              */
-                            /*
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                GameDetailScreen.routeName,
-                                arguments: providedGame.id,
-                                (route) => route.isFirst,
-                                //ModalRoute.withName(GamesOverviewScreen.routeName),
-                              );
-                              */
                             Navigator.of(context).pushNamed(
                               GameDetailScreen.routeName,
                               arguments: providedGame.id,
@@ -164,26 +119,10 @@ class GameItem extends StatelessWidget {
                         height: constraints.maxHeight / 2.75,
                         child: GestureDetector(
                           onTap: () {
-                            /*
-                              print('push game detail page');
-                              Navigator.of(context).pushNamed(
-                                GameDetailScreen.routeName, arguments: providedGame.id,
-                                
-                                //arguments: GameDetailArguments(id: providedGame.id),
-                              );
-                               */
                             Navigator.of(context).pushNamed(
                               GameDetailScreen.routeName,
                               arguments: providedGame.id,
                             );
-                            /*
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                GameDetailScreen.routeName,
-                                arguments: providedGame.id,
-                                (route) => route.isFirst,
-                                //ModalRoute.withName(GamesOverviewScreen.routeName),
-                              );
-                              */
                           },
                           child: Container(
                             //color: Colors.grey,
@@ -206,25 +145,6 @@ class GameItem extends StatelessWidget {
                                 ),
                               ),
                               //title: Container(), //to push the trailing item to the right
-                              /*
-                                title: Consumer<Game>(builder: (context, game, child) {
-                                  if (game.releaseDate == null) {
-                                    return GestureDetector(
-                                      onLongPress: () {
-                                        //showDiaLog or show snackbar that you have not added a release date for this one
-                                      },
-                                      onTap: () {
-                                        //show pick date to pick release date
-                                      },
-                                      child: const Icon(
-                                        Icons.calendar_month,
-                                        size: 20,
-                                      ),
-                                    );
-                                  }
-                                  return Container();
-                                }),
-                                */
                               title: Consumer<Game>(builder: (context, game, child) {
                                 return GestureDetector(
                                     onLongPress: () {
@@ -269,17 +189,7 @@ class GameItem extends StatelessWidget {
                       ),
                       child: GestureDetector(
                         onTap: () {
-                          /*
-                            Navigator.of(context).pushNamedAndRemoveUntil(
-                              GameDetailScreen.routeName,
-                              arguments: providedGame.id,
-                              (route) => route.isFirst,
-                              //ModalRoute.withName(GamesOverviewScreen.routeName),
-                            );
-                            */
-
                           //print('push game detail page');
-
                           Navigator.of(context).pushNamed(
                             GameDetailScreen.routeName,
                             arguments: providedGame.id,
@@ -287,7 +197,10 @@ class GameItem extends StatelessWidget {
                         },
                         child: SizedBox(
                           child:
-                              /*Hero(
+                          //FadeInImage's placeholder can cause error (placeholder null check on a null value error) 
+                          //when returning from user gaming experience screen, so comment it out
+                          
+                          /*Hero(
                             tag: "1st image${providedGame.id}",
                             child: Image(
                               image: NetworkImage(providedGame.titleImageURL),
@@ -316,7 +229,7 @@ class GameItem extends StatelessWidget {
                             height: double.infinity,
                             //in order for landscape images to fit into the squared sizedbox
                           ),*/
-                              Image(
+                            Image(
                             image: NetworkImage(providedGame.titleImageURL),
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
