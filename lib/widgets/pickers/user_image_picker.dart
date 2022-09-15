@@ -36,25 +36,9 @@ class _UserImagePickerState extends State<UserImagePicker> {
     } on PlatformException catch (error) {
       print(error);
       //print("Platform Exception");
-      /*String message = "An error occurred, please select your image again";
-      ScaffoldMessenger.of(widget.ctx).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          backgroundColor: Theme.of(context).errorColor,
-        ),
-      );
-      */
     } catch (error) {
       print(error);
-      /*
-      String message = "An error occurred, please select your image again";
-      ScaffoldMessenger.of(widget.ctx).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          backgroundColor: Theme.of(context).errorColor,
-        ),
-      );
-      */
+
     }
   }
 
