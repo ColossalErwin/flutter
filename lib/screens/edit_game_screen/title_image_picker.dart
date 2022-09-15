@@ -70,35 +70,3 @@ class _TitleImagePickerState extends State<TitleImagePicker> {
     );
   }
 }
-
-/*
-crossAxisAlignment: CrossAxisAlignment.end,
-children: [
-  Container(
-    width: 100,
-    height: 100,
-    margin: const EdgeInsets.only(top: 8, right: 10),
-    decoration: BoxDecoration(
-      border: Border.all(
-        width: 1,
-        color: Colors.grey,
-      ),
-    ),
-    alignment: Alignment.center, //for Text("Add a URL")
-    child: (_titleImageURLController.text.isEmpty)
-        ? const FittedBox(child: Text("Add a URL"))
-        : Image.network(
-            errorBuilder: (context, error, stackTrace) {
-              return const Image(
-                image: AssetImage("assets/images/404_eye.png"),
-              );
-            },
-            _titleImageURLController.text,
-            fit: BoxFit.cover,
-          ),
-  ),
-  Flexible(
-    child: Container(),
-  ),
-],
-*/
