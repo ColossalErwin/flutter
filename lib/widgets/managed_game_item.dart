@@ -100,11 +100,6 @@ class ManagedGameItem extends StatelessWidget {
                   child: const Text("No"),
                   onPressed: () {
                     Navigator.of(context).pop(false);
-                    //Navigator.of(context).pop would close the AlertDialog
-                    //since the anonymous function needs to return a Future obj that contains boolean
-                    //and ShowDialog can return a Future object
-                    //we can pass a boolean value to the pop method inside AlertDialog
-                    //this value would then become the boolean value return for the Future obj of showDialog
                   },
                 ),
                 TextButton(
@@ -228,14 +223,7 @@ class ManagedGameItem extends StatelessWidget {
         //use InkWell to create an effect for ListTile
         //https://stackoverflow.com/questions/60040972/flutter-listtile-splash-ripple-effect-not-matching-border
         child: ListTile(
-          /*
-          onTap: () {
-            Navigator.of(context).pushNamed(
-              GameDetailScreen.routeName,
-              arguments: id,
-            );
-          },
-          */
+ 
           tileColor: (Theme.of(context).brightness == Brightness.light)
               ? const Color.fromARGB(223, 247, 245, 239)
               : null,
@@ -250,9 +238,9 @@ class ManagedGameItem extends StatelessWidget {
               },
               child: CircleAvatar(
                 ///backgroundImage argument does not take a Widget,
-                /// so we cannot use Image.network(imageURL).
-                ///Instead, it takes a ImageProvider,
-                ///and we have to use something like NetworkImage (a class object)
+                ///so we cannot use Image.network(imageURL).
+                ///Instead, it takes an ImageProvider,
+                ///and we have to use something like NetworkImage (a class)
                 backgroundImage: NetworkImage(titleImageURL),
               ),
             ),
