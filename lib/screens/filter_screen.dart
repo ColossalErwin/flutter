@@ -25,26 +25,9 @@ class FilterScreen extends StatefulWidget {
 }
 
 class _FilterScreenState extends State<FilterScreen> {
-  //variables with logics related to each other will be grouped
 
-/*
-  bool _showThisYearBacklogOnly = false;
-  bool _showLastYearBacklogOnly = false;
-
-  bool _showDislikeds = false;
-
-  bool _removeAfter30Days = true;
-  bool _showTips = true;
-  */
   @override
   void initState() {
-    /*
-    _showBacklogOnly = widget.filters['isGlutenFree'] as bool;
-    _showHaveNotFinishedOnly = widget.filters['isLactoseFree'] as bool;
-    _showFavoritesOnly = widget.filters['isVegetarian'] as bool;
-    _showThisYearBacklog = widget.filters['isVegan'] as bool;
-    _showLastYearBacklogOnly = widget.filters['hideDisliked'] as bool;
-    */
     super.initState();
   }
 
@@ -68,16 +51,6 @@ class _FilterScreenState extends State<FilterScreen> {
   Widget build(BuildContext context) {
     var userPreferences = Provider.of<UserPreferences>(context, listen: false);
     var filters = userPreferences.myCollectionFilters;
-    /*
-    if (filters.isEmpty) {
-      Future.delayed(const Duration(seconds: 1)).then((_) async {
-        await Provider.of<UserPreferences>(context, listen: false).fetchFilters();
-      });
-    }
-    if (filters.isEmpty) {
-      filters = Provider.of<UserPreferences>(context, listen: false).myCollectionFilters;
-    }
-    */
 
     print("build filters screen");
     return Scaffold(
@@ -87,15 +60,6 @@ class _FilterScreenState extends State<FilterScreen> {
           IconButton(
             tooltip: "Save changes and exit",
             onPressed: () {
-              /*
-              final Map<String, bool> userSelectedfilters = {
-                'isGlutenFree': _showBacklogOnly,
-                'isLactoseFree': _showHaveNotFinishedOnly,
-                'isVegetarian': _showFavoritesOnly,
-                'isVegan': _showThisYearBacklog,
-                'hideDisliked': _showLastYearBacklogOnly,
-              };
-              */
               //widget.saveFilters(userSelectedfilters);
               while (Navigator.of(context).canPop()) {
                 Navigator.of(context).pop();
@@ -111,8 +75,8 @@ class _FilterScreenState extends State<FilterScreen> {
         ],
       ),
       drawer: const AppDrawer(),
-      //for some reason cannot use SingleChildScrollView
-      //so use CustomScrollView
+      //cannot use SingleChildScrollView here
+      //use CustomScrollView
       //see: https://stackoverflow.com/questions/56326005/how-to-use-expanded-in-singlechildscrollview
       body: CustomScrollView(
         slivers: [
@@ -186,82 +150,6 @@ class _FilterScreenState extends State<FilterScreen> {
                           });
                         },
                       ),
-                      //const Divider(),
-                      /*
-                      _switchListTileBuilder(
-                        "This Year",
-                        "Showing games that you have ",
-                        _showThisYearBacklogOnly,
-                        (boolValue) {
-                          setState(() {
-                            _showThisYearBacklogOnly = boolValue;
-                          });
-                        },
-                      ),
-                      _switchListTileBuilder(
-                        "Last Year",
-                        "Only show games that you have added last year.",
-                        _showLastYearBacklogOnly,
-                        (boolValue) {
-                          setState(() {
-                            _showLastYearBacklogOnly = boolValue;
-                          });
-                        },
-                      ),
-                      _switchListTileBuilder(
-                        "Remove after 30 days",
-                        "Your games in the trash folder will be removed after 30 days.",
-                        _removeAfter30Days,
-                        (boolValue) {
-                          setState(() {
-                            _removeAfter30Days = boolValue;
-                          });
-                        },
-                      ),
-                      _switchListTileBuilder(
-                        "Unfamilliar?",
-                        "Show tips and hints to provide user a good experience.",
-                        _showTips,
-                        (boolValue) {
-                          setState(() {
-                            _showTips = boolValue;
-                          });
-                        },
-                      ),
-                      */
-                      /*
-                      ListTile(
-                        leading: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.grey[700],
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).pushAndRemoveUntil(
-                              CustomRoute(
-                                builder: (context) => const GamesOverviewScreen(),
-                              ),
-                              (route) => route.isFirst,
-                            );
-                          },
-                          child: const Text("Cancel"),
-                        ),
-                        trailing: ElevatedButton.icon(
-                          icon: const Icon(Icons.save_sharp),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.grey[700],
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).pushAndRemoveUntil(
-                              CustomRoute(
-                                builder: (context) => const GamesOverviewScreen(),
-                              ),
-                              (route) => route.isFirst,
-                            );
-                          },
-                          label: const Text("Apply"),
-                        ),
-                      ),
-                      */
                     ],
                   ),
                 )
