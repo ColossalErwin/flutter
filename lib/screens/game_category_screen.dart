@@ -1,8 +1,4 @@
-//also there could be two tabs, 1 tab to show categories, the other show backlog by days (this month, last three months, last 6 months, ...)
-
-//should show category folders so that we can click on them to explore furthur
-//these folders should based on major genres, so we might need to make this like the meals app
-//packages
+//future feature
 import 'package:flutter/material.dart';
 //screens
 import '../widgets/app_drawer.dart';
