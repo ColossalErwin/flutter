@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "588822565362",
+    "project_id": "my-backlog-1040f",
+    "storage_bucket": "my-backlog-1040f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:588822565362:android:1222f54e381c9845addb6b",
+        "android_client_info": {
+          "package_name": "com.hieutran.my_games"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "588822565362-v7qa04e1aqa5o8bc4p2l7jnl0fitiuk6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKyCC7JOCz9Dzua_W-0jERNwipxOwxn-s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "588822565362-v7qa04e1aqa5o8bc4p2l7jnl0fitiuk6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
