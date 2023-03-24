@@ -1,0 +1,15 @@
+// This is a generated file; do not edit or check into version control.
+FLUTTER_ROOT=/Users/hieutran/Developer/flutter
+FLUTTER_APPLICATION_PATH=/Users/hieutran/flutter-workspace/My Apps/Video Games Backlog/2.7 Darkmode + new approach for fetiching in main/my_games
+COCOAPODS_PARALLEL_CODE_SIGN=true
+FLUTTER_TARGET=/Users/hieutran/flutter-workspace/My Apps/Video Games Backlog/2.7 Darkmode + new approach for fetiching in main/my_games/lib/main.dart
+FLUTTER_BUILD_DIR=build
+FLUTTER_BUILD_NAME=1.0.0
+FLUTTER_BUILD_NUMBER=1
+EXCLUDED_ARCHS[sdk=iphonesimulator*]=i386
+EXCLUDED_ARCHS[sdk=iphoneos*]=armv7
+DART_DEFINES=RkxVVFRFUl9XRUJfQVVUT19ERVRFQ1Q9dHJ1ZQ==
+DART_OBFUSCATION=false
+TRACK_WIDGET_CREATION=true
+TREE_SHAKE_ICONS=false
+PACKAGE_CONFIG=/Users/hieutran/flutter-workspace/My Apps/Video Games Backlog/2.7 Darkmode + new approach for fetiching in main/my_games/.dart_tool/package_config.json
