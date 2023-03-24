@@ -1,0 +1,2 @@
+should mimic logic to add image from edited game screen
+should implement trash logic also
