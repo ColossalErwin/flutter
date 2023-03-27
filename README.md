@@ -1,5 +1,7 @@
 # Videogames backlog project
 
+Link on Google Play: https://play.google.com/store/apps/details?id=com.hieutran.my_games
+
 Hi, I'm Hieu Tran, at UT Dallas. I am a Junior - Senior Computer Science student, and currently I am learning to become a good mobile developer.
 This project is a joy of mine and I spent a whole month only working on it, just to make sure it's nearly bug-free; I did sacrifice a bit of my GPA for this one, but it's ok since making mobile apps has become one of my hobbies.
 
